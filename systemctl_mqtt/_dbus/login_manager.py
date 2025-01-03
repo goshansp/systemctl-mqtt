@@ -88,7 +88,6 @@ class LoginManager(systemctl_mqtt._dbus.Properties):  # pylint: disable=protecte
             # jeepney.wrappers.DBusErrorResponse: [org.freedesktop.DBus.Error.AccessDenied] ('Sender is not authorized to send message',)
             # Jan 03 08:04:14 fcos-41.hp.molecule.lab dbus-broker[1138]: A security policy denied :1.67 to send method call /org/freedesktop/login1:org.freedesktop.login1.Manager.StartUnit to org.freedesktop.login1.
             #
-            # We're running from userspace ... next: run as root
             # jeepney.wrappers.DBusErrorResponse: [org.freedesktop.DBus.Error.UnknownMethod] ('Unknown method StartUnit or interface org.freedesktop.login1.Manager.',)
             remote_obj=self, method="StartUnit", signature="s", body=("ansible-pull.service",)
         )
