@@ -80,6 +80,14 @@ class LoginManager(systemctl_mqtt._dbus.Properties):  # pylint: disable=protecte
             remote_obj=self, method="Suspend", signature="b", body=(interactive,)
         )
 
+    # WIP: Hardcoded starting of ansible-pull.service ... first shot
+    def StartAnsible(self, *, interactive: bool) -> jeepney.low_level.Message:
+        return jeepney.new_method_call(
+            # jeepney.wrappers.DBusErrorResponse: [org.freedesktop.DBus.Error.InteractiveAuthorizationRequired] ('Interactive authentication required.',)
+            # We're running from userspace ... next: run as root
+            remote_obj=self, method="StartUnit", signature="s", body=("ansible-pull.service",)
+        )
+
     def Inhibit(
         self, *, what: str, who: str, why: str, mode: str
     ) -> jeepney.low_level.Message:
@@ -177,3 +185,8 @@ def lock_all_sessions() -> None:
     """
     _LOGGER.info("instruct all sessions to activate screen locks")
     get_login_manager_proxy().LockSessions()
+
+# WIP: First shot
+def start_ansible() -> None:
+    _LOGGER.info("login_manager start ansible")
+    get_login_manager_proxy().StartAnsible(interactive=False)

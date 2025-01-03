@@ -245,6 +245,14 @@ class _MQTTActionSchedulePoweroff(_MQTTAction):
             action="poweroff", delay=state.poweroff_delay
         )
 
+# WIP: Start system unit service ...
+class _MQTTActionStartServiceAnsible(_MQTTAction):
+    # pylint: disable=too-few-public-methods
+    def trigger(self, state: _State) -> None:
+        _LOGGER.info("__init __ ... starting ansible ...")
+        # systemctl_mqtt._dbus.login_manager.lock_all_sessions()
+        systemctl_mqtt._dbus.login_manager.start_ansible()
+
 
 class _MQTTActionLockAllSessions(_MQTTAction):
     # pylint: disable=too-few-public-methods
@@ -260,12 +268,13 @@ class _MQTTActionSuspend(_MQTTAction):
         systemctl_mqtt._dbus.login_manager.suspend()
 
 
+# WIP: Hardcoded start topic
 _MQTT_TOPIC_SUFFIX_ACTION_MAPPING = {
     "poweroff": _MQTTActionSchedulePoweroff(),
     "lock-all-sessions": _MQTTActionLockAllSessions(),
     "suspend": _MQTTActionSuspend(),
+    "start-ansible":_MQTTActionStartServiceAnsible(),
 }
-
 
 async def _mqtt_message_loop(*, state: _State, mqtt_client: aiomqtt.Client) -> None:
     action_by_topic: typing.Dict[str, _MQTTAction] = {}
