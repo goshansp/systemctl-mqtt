@@ -37,6 +37,7 @@ import jeepney.io.asyncio
 
 import systemctl_mqtt._dbus.login_manager
 import systemctl_mqtt._dbus.service_manager
+import systemctl_mqtt._dbus.systemd_manager
 import systemctl_mqtt._homeassistant
 import systemctl_mqtt._mqtt
 
@@ -251,7 +252,11 @@ class _MQTTActionStartServiceAnsible(_MQTTAction):
     def trigger(self, state: _State) -> None:
         _LOGGER.info("__init __ ... starting ansible ...")
         # systemctl_mqtt._dbus.login_manager.lock_all_sessions()
-        systemctl_mqtt._dbus.login_manager.start_ansible()
+        #
+        # Unknown method StartUnit or interface org.freedesktop.login1.Manager.
+        # systemctl_mqtt._dbus.login_manager.start_ansible()
+        #
+        systemctl_mqtt._dbus.systemd_manager.start_ansible()
 
 
 class _MQTTActionLockAllSessions(_MQTTAction):
